@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %}Blog{% endblock %}
+{% block body %}
+<h1>Publicaciones</h1>
+{% for post in posts %}
+    <h2>{{ post.titulo }}</h2>
+    <p>{{ post.contenido }}</p>
+    <small>Autor: {{ post.usuario.nombre }} | Categoría: {{ post.categoria.nombre }}</small>
+{% else %}
+    <p>No hay publicaciones</p>
+{% endfor %}
+<a href="{{ url_for('registro') }}">Registrarme</a> |
+<a href="{{ url_for('login') }}">Iniciar Sesion</a> |
+<a href="{{ url_for('nuevo_post') }}">Nuevo post</a>
+{% endblock %}
