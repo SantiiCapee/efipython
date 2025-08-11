@@ -3,13 +3,14 @@
 {% block body %}
 <h1>Publicaciones</h1>
 {% for post in posts %}
-    <h2>{{ post.titulo }}</h2>
-    <p>{{ post.contenido }}</p>
-    <small>Autor: {{ post.usuario.nombre }} | Categoría: {{ post.categoria.nombre }}</small>
+    <h2><a href="{{ url_for('ver_post', post_id=post.id) }}">{{ post.titulo }}</a></h2>
+    <p>{{ post.contenido[:100] }}...</p>
 {% else %}
     <p>No hay publicaciones</p>
 {% endfor %}
-<a href="{{ url_for('registro') }}">Registrarme</a> |
-<a href="{{ url_for('login') }}">Iniciar Sesion</a> |
-<a href="{{ url_for('nuevo_post') }}">Nuevo post</a>
+{% if session.get("usuario_id") %}
+    <p>Hola, {{ session["usuario_nombre"] }} | <a href="{{ url_for('logout') }}">Cerrar sesión</a> | <a href="{{ url_for('nuevo_post') }}">Publicar un Post</a></p>
+{% else %}
+    <a href="{{ url_for('login') }}">Iniciar sesión</a> | <a href="{{ url_for('registro') }}">Registrarse</a> | <a href="{{ url_for('nuevo_post') }}">Publicar un Post</a>
+{% endif %}
 {% endblock %}
