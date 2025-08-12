@@ -17,5 +17,9 @@
 {% endwith %}
     {% block body %}
     {% endblock %}
+<hr>
+{% if request.endpoint != 'index' %}
+    <a href="javascript:history.back()">Volver</a> |
+{% endif %}
 </body>
-</html>
+</html> 
