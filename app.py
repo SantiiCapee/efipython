@@ -9,11 +9,11 @@ load_dotenv()
 
 app = Flask(__name__)
 
-#Conexion a la base de datos
+# Configuración de la base de datos
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:@localhost/db_blogcito"
 db = SQLAlchemy(app)
 
-#Migrates importacion
+# Migraciones
 migrate = Migrate(app, db)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
@@ -21,10 +21,16 @@ app.secret_key = os.getenv('SECRET_KEY')
 
 from models import Usuario, Post, Comentario, Categoria
 
+@app.context_processor
+def inject_categorias():
+    categorias = Categoria.query.all()
+    return dict(categorias=categorias)
+
+
 @app.route("/")
 def index():
-   posts = Post.query.all() # Renderiza todos los posts
-   return render_template("index.html", posts=posts)
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts)
 
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
@@ -74,8 +80,7 @@ def nuevo_post():
         db.session.commit()
         flash("Post creado con éxito.", "success")
         return redirect(url_for("index"))
-    categorias = Categoria.query.all()
-    return render_template("nuevo_post.html", categorias=categorias)
+    return render_template("nuevo_post.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
