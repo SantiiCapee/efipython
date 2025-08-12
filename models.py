@@ -17,6 +17,7 @@ class Post(db.Model):
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     categoria_id = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=False)
+    comentarios = db.relationship('Comentario', backref='post', lazy=True)
 
 class Comentario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +25,7 @@ class Comentario(db.Model):
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    autor = db.relationship('Usuario', backref='comentarios', lazy=True)
 
 class Categoria(db.Model):
     id = db.Column(db.Integer, primary_key=True)
